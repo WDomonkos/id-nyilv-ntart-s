@@ -24,13 +24,65 @@ function loadEntries() {
 function displayEntry(entry) {
     const entryDiv = document.createElement('div');
     entryDiv.className = 'border-b border-gray-300 py-2';
-    entryDiv.innerHTML = 
+    entryDiv.innerHTML = `
         <p><strong>Dátum:</strong> ${entry.date}</p>
         <p><strong>Kezdés:</strong> ${entry.start}</p>
         <p><strong>Befejezés:</strong> ${entry.end}</p>
         <p><strong>Leírás:</strong> ${entry.description}</p>
         <p><strong>Címke:</strong> ${entry.category}</p>
-    ;
+    `;
     entriesList.appendChild(entryDiv); // Hozzáadjuk a div-hez
 }
 
+// Form submit eseménykezelője
+function handleFormSubmit(event) {
+    event.preventDefault();  // Ne töltsük újra az oldalt
+
+    const date = document.getElementById('date').value;
+    const start = document.getElementById('start').value;
+    const end = document.getElementById('end').value;
+    const description = document.getElementById('description').value;
+    const category = document.getElementById('category').value;
+
+    // Dátum és idő validálása
+    if (!isDateValid(date) || !isStartTimeValid(start) || !isTimeValid(start, end)) return;
+
+    // Új bejegyzés létrehozása és mentése
+    const entry = { date, start, end, description, category };
+    saveEntry(entry);
+    displayEntry(entry);  // Azonnal megjelenítjük az új bejegyzést
+    document.getElementById('entry-form').reset();
+}
+
+// Dátum validálása
+function isDateValid(date) {
+    const now = new Date().toISOString().split('T')[0];  // Aktuális dátum
+    if (date < MIN_DATE || date > now) {
+        showError('Érvénytelen dátum. Csak 2023 utáni dátumokat adhat meg.');
+        return false;
+    }
+    hideError();
+    return true;
+}
+
+// Kezdési idő validálása
+function isStartTimeValid(start) {
+    // Ha a kezdési idő korábban van, mint 8:00, akkor hiba
+    if (start < MIN_START_TIME) {
+        showError('A kezdési idő nem lehet korábban, mint 8:00!');
+        return false;
+    }
+    hideError();
+    return true;
+}
+
+// Befejezési idő validálása
+function isTimeValid(start, end) {
+    // Ha a befejezési idő nem későbbi, mint a kezdési idő, akkor hiba
+    if (end <= start) {
+        showError('A befejezési idő későbbi kell legyen, mint a kezdési idő.');
+        return false;
+    }
+    hideError();
+    return true;
+}
