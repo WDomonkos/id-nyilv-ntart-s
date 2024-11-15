@@ -24,26 +24,38 @@
         <section id="entry-section" class="mb-4">
             <h2 class="text-xl font-semibold mb-2">Új Munkaidő Bejegyzés</h2>
             <form id="entry-form" class="bg-white p-4 rounded shadow-md">
-                <label for="date" class="block mb-2">Dátum:</label>
-                <input type="date" id="date" class="border p-2 mb-2 w-full" min="2023-01-01" required>
-
+                <!-- Dátum mezők: Év, Hónap, Nap -->
+                <label for="year" class="block mb-2">Év:</label>
+                <input type="text" id="year" class="border p-2 mb-2 w-1/4" maxlength="4" required placeholder="Év (pl. 2023)">
+        
+                <label for="month" class="block mb-2">Hónap:</label>
+                <input type="text" id="month" class="border p-2 mb-2 w-1/4" maxlength="2" required placeholder="Hónap (pl. 11)">
+        
+                <label for="day" class="block mb-2">Nap:</label>
+                <input type="text" id="day" class="border p-2 mb-2 w-1/4" maxlength="2" required placeholder="Nap (pl. 15)">
+        
+                <!-- Kezdési idő -->
                 <label for="start" class="block mb-2">Kezdési idő:</label>
                 <input type="time" id="start" class="border p-2 mb-2 w-full" required>
-
-                <label for="end" class="block mb-2">Befejezési idő:</label>
+        
+                <!-- Befejezési idő -->
+                <label for="end" class="block mb-2">Befejezés idő:</label>
                 <input type="time" id="end" class="border p-2 mb-2 w-full" required>
-
+        
+                <!-- Feladat leírása -->
                 <label for="description" class="block mb-2">Feladat leírása:</label>
                 <input type="text" id="description" class="border p-2 mb-2 w-full" required>
-
+        
+                <!-- Címke -->
                 <label for="category" class="block mb-2">Címke (Projekt, Ügyfél):</label>
                 <input type="text" id="category" class="border p-2 mb-2 w-full" required>
-
+        
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Hozzáadás</button>
-
+        
                 <p id="error-message" class="text-red-500 mt-2 hidden"></p>
             </form>
         </section>
+        
 
         <!-- Bejegyzések Listája -->
         <section>
@@ -55,6 +67,6 @@
     </main>
 
     <!-- JavaScript fájl -->
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

@@ -4,12 +4,26 @@ const MIN_START_TIME = '08:00'; // A legkorábbi kezdési idő (8:00 reggel)
 const entriesList = document.getElementById('entries-list');
 const errorMessage = document.getElementById('error-message');
 
-// Oldal betöltéskor futó fő inicializáló
 document.addEventListener('DOMContentLoaded', () => {
-    // Form beküldésének eseménykezelője
-    document.getElementById('entry-form').addEventListener('submit', handleFormSubmit);
-    loadEntries();  // Már létező bejegyzések betöltése
+    const yearInput = document.getElementById('year');
+    const monthInput = document.getElementById('month');
+    const dayInput = document.getElementById('day');
+
+    // Figyeljük az év mezőt
+    yearInput.addEventListener('input', (event) => {
+        if (event.target.value.length === 4) {
+            monthInput.focus();  // Ha az év 4 karakter, akkor lépjen a hónap mezőre
+        }
+    });
+
+    // Figyeljük a hónap mezőt
+    monthInput.addEventListener('input', (event) => {
+        if (event.target.value.length === 2) {
+            dayInput.focus();  // Ha a hónap 2 karakter, akkor lépjen a nap mezőre
+        }
+    });
 });
+
 
 // Bejegyzések betöltése localStorage-ból
 function loadEntries() {
