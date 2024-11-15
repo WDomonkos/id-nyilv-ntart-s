@@ -124,5 +124,5 @@ function hideError() {
 function saveEntry(entry) {
     const entries = JSON.parse(localStorage.getItem('entries')) || [];
     entries.push(entry);
-    localStorage.setItem('
-
+    localStorage.setItem('entries', JSON.stringify(entries));
+}
