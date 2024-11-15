@@ -5,37 +5,22 @@ const entriesList = document.getElementById('entries-list');
 const errorMessage = document.getElementById('error-message');
 
 document.addEventListener('DOMContentLoaded', () => {
-    const yearInput = document.getElementById('year');
-    const monthInput = document.getElementById('month');
-    const dayInput = document.getElementById('day');
-
-    // Figyeljük az év mezőt
-    yearInput.addEventListener('input', (event) => {
-        if (event.target.value.length === 4) {
-            monthInput.focus();  // Ha az év 4 karakter, akkor lépjen a hónap mezőre
-        }
-    });
-
-    // Figyeljük a hónap mezőt
-    monthInput.addEventListener('input', (event) => {
-        if (event.target.value.length === 2) {
-            dayInput.focus();  // Ha a hónap 2 karakter, akkor lépjen a nap mezőre
-        }
-    });
+    // Form beküldésének eseménykezelője
+    document.getElementById('entry-form').addEventListener('submit', handleFormSubmit);
+    loadEntries();  // Bejegyzések betöltése oldal betöltésekor
 });
-
 
 // Bejegyzések betöltése localStorage-ból
 function loadEntries() {
-    // Üres lista esetén is működjön
-    entriesList.innerHTML = '';  // A lista törlése, ha újratöltjük
+    const entriesList = document.getElementById('entries-list');
+    entriesList.innerHTML = '';  // Üresítjük a listát újratöltés előtt
     const entries = JSON.parse(localStorage.getItem('entries')) || [];
-    // Minden bejegyzés kiírása
     entries.forEach(entry => displayEntry(entry));
 }
 
 // Bejegyzés megjelenítése
 function displayEntry(entry) {
+    const entriesList = document.getElementById('entries-list');
     const entryDiv = document.createElement('div');
     entryDiv.className = 'border-b border-gray-300 py-2';
     entryDiv.innerHTML = `
@@ -52,36 +37,58 @@ function displayEntry(entry) {
 function handleFormSubmit(event) {
     event.preventDefault();  // Ne töltsük újra az oldalt
 
-    const date = document.getElementById('date').value;
+    // Adatok lekérése a form mezőkből
+    const year = document.getElementById('year').value;
+    const month = document.getElementById('month').value;
+    const day = document.getElementById('day').value;
     const start = document.getElementById('start').value;
     const end = document.getElementById('end').value;
     const description = document.getElementById('description').value;
     const category = document.getElementById('category').value;
 
-    // Dátum és idő validálása
-    if (!isDateValid(date) || !isStartTimeValid(start) || !isTimeValid(start, end)) return;
+    // Dátum validálása
+    if (!isDateValid(year, month, day) || !isStartTimeValid(start) || !isTimeValid(start, end)) return;
+
+    const date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // Dátum formázása YYYY-MM-DD
 
     // Új bejegyzés létrehozása és mentése
     const entry = { date, start, end, description, category };
     saveEntry(entry);
-    displayEntry(entry);  // Azonnal megjelenítjük az új bejegyzést
-    document.getElementById('entry-form').reset();
+    displayEntry(entry);  // Azonnali megjelenítés
+    document.getElementById('entry-form').reset(); // Form ürítése
 }
 
 // Dátum validálása
-function isDateValid(date) {
-    const now = new Date().toISOString().split('T')[0];  // Aktuális dátum
-    if (date < MIN_DATE || date > now) {
-        showError('Érvénytelen dátum. Csak 2023 utáni dátumokat adhat meg.');
+function isDateValid(year, month, day) {
+    // Év, hónap és nap megfelelő értékeinek ellenőrzése
+    if (month < 1 || month > 12) {
+        showError('A hónapnak 1 és 12 között kell lennie!');
         return false;
     }
+    if (day < 1 || day > 31) {
+        showError('A napnak 1 és 31 között kell lennie!');
+        return false;
+    }
+
+    // Ha a hónap február, és a nap nagyobb 28-nál, akkor hiba
+    if (month == 2 && day > 28) {
+        showError('Februárban a nap nem haladhatja meg a 28-at!');
+        return false;
+    }
+
+    // A többi hónap (30 vagy 31 napos) ellenőrzése
+    if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30) {
+        showError('A hónapnak 30 napja van!');
+        return false;
+    }
+
     hideError();
     return true;
 }
 
 // Kezdési idő validálása
 function isStartTimeValid(start) {
-    // Ha a kezdési idő korábban van, mint 8:00, akkor hiba
+    const MIN_START_TIME = '08:00'; // A legkorábbi kezdési idő
     if (start < MIN_START_TIME) {
         showError('A kezdési idő nem lehet korábban, mint 8:00!');
         return false;
@@ -92,7 +99,6 @@ function isStartTimeValid(start) {
 
 // Befejezési idő validálása
 function isTimeValid(start, end) {
-    // Ha a befejezési idő nem későbbi, mint a kezdési idő, akkor hiba
     if (end <= start) {
         showError('A befejezési idő későbbi kell legyen, mint a kezdési idő.');
         return false;
@@ -103,12 +109,14 @@ function isTimeValid(start, end) {
 
 // Hibaüzenet megjelenítése
 function showError(message) {
+    const errorMessage = document.getElementById('error-message');
     errorMessage.textContent = message;
     errorMessage.classList.remove('hidden');
 }
 
 // Hibaüzenet eltüntetése
 function hideError() {
+    const errorMessage = document.getElementById('error-message');
     errorMessage.classList.add('hidden');
 }
 
@@ -116,5 +124,5 @@ function hideError() {
 function saveEntry(entry) {
     const entries = JSON.parse(localStorage.getItem('entries')) || [];
     entries.push(entry);
-    localStorage.setItem('entries', JSON.stringify(entries));
-}
+    localStorage.setItem('
+
