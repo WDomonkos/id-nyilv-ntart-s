@@ -1,1 +1,0 @@
-# Id-nyilv-ntart-rendszer
