@@ -86,3 +86,21 @@ function isTimeValid(start, end) {
     hideError();
     return true;
 }
+
+// Hibaüzenet megjelenítése
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.classList.remove('hidden');
+}
+
+// Hibaüzenet eltüntetése
+function hideError() {
+    errorMessage.classList.add('hidden');
+}
+
+// Bejegyzés mentése localStorage-ba
+function saveEntry(entry) {
+    const entries = JSON.parse(localStorage.getItem('entries')) || [];
+    entries.push(entry);
+    localStorage.setItem('entries', JSON.stringify(entries));
+}
