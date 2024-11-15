@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Időnyilvántartó Alkalmazás</title>
+
+    <!-- CSS keretrendszer: Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Egyedi CSS stílusok -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Fejléc -->
+    <header class="bg-blue-600 p-4 text-center text-white text-2xl font-bold">
+        Egyszerű Időnyilvántartó Alkalmazás
+    </header>
+
+    <!-- Fő Tartalom -->
+    <main class="container mx-auto p-4">
+        <!-- Új Bejegyzés -->
+        <section id="entry-section" class="mb-4">
+            <h2 class="text-xl font-semibold mb-2">Új Munkaidő Bejegyzés</h2>
+            <form id="entry-form" class="bg-white p-4 rounded shadow-md">
+                <label for="date" class="block mb-2">Dátum:</label>
+                <input type="date" id="date" class="border p-2 mb-2 w-full" min="2023-01-01" required>
+
+                <label for="start" class="block mb-2">Kezdési idő:</label>
+                <input type="time" id="start" class="border p-2 mb-2 w-full" required>
+
+                <label for="end" class="block mb-2">Befejezési idő:</label>
+                <input type="time" id="end" class="border p-2 mb-2 w-full" required>
+
+                <label for="description" class="block mb-2">Feladat leírása:</label>
+                <input type="text" id="description" class="border p-2 mb-2 w-full" required>
+
+                <label for="category" class="block mb-2">Címke (Projekt, Ügyfél):</label>
+                <input type="text" id="category" class="border p-2 mb-2 w-full" required>
+
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Hozzáadás</button>
+
+                <p id="error-message" class="text-red-500 mt-2 hidden"></p>
+            </form>
+        </section>
+
+        <!-- Bejegyzések Listája -->
+        <section>
+            <h2 class="text-xl font-semibold mb-2">Munkaidő Bejegyzések</h2>
+            <div id="entries-list" class="bg-white p-4 rounded shadow-md">
+                <!-- Dinamikusan generált bejegyzések -->
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript fájl -->
+    <script src="script.js"></script>
+</body>
+</html>
